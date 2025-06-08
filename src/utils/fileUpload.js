@@ -1,6 +1,8 @@
+import API from "../config/consts";
+
 // File validation function
 export const validateFile = (file, allowedTypes) => {
-  const maxSize = 5 * 1024 * 1024; // 5MB
+  const maxSize = 100 * 1024 * 1024; // 100MB
   if (!file) return { valid: false, message: "No file selected." };
   if (file.size > maxSize)
     return { valid: false, message: "File size exceeds 5MB limit." };
@@ -10,20 +12,36 @@ export const validateFile = (file, allowedTypes) => {
 };
 
 // Get presigned URL from server
-export const getPresignedUrl = async (file, api) => {
-  const URL = api.BASE_URL + api.GET_PRESIGNED_URL;
-  const res = await fetch(
-    `${URL}?fileName=${file.name}&contentType=${file.type}`
-  );
+export const getPresignedUrl = async (file) => {
+  const URL = API.BASE_URL + API.GET_PRESIGNED_URL;
+  const res = await fetch(URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fileName: file.name,
+      contentType: file.type,
+    }),
+  });
   return res.json();
 };
 
 // Upload file to S3 using presigned URL
-export const uploadToS3 = (file, url, setProgress, setMessage) => {
+export const uploadToS3 = (file, dataset, setProgress, setMessage) => {
   return new Promise((resolve, reject) => {
+    const { url, fields } = dataset;
+
+    const formData = new FormData();
+    // Add all fields required by S3
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    // Append the actual file
+    formData.append("file", file);
+
     const xhr = new XMLHttpRequest();
-    xhr.open("PUT", url, true);
-    xhr.setRequestHeader("Content-Type", file.type);
+    xhr.open("POST", url);
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
@@ -33,7 +51,7 @@ export const uploadToS3 = (file, url, setProgress, setMessage) => {
     };
 
     xhr.onload = () => {
-      if (xhr.status === 200) {
+      if (xhr.status === 204 || xhr.status === 200) {
         setMessage("Upload successful!");
         resolve();
       } else {
@@ -47,6 +65,6 @@ export const uploadToS3 = (file, url, setProgress, setMessage) => {
       reject();
     };
 
-    xhr.send(file);
+    xhr.send(formData);
   });
 };

@@ -33,15 +33,16 @@ function App() {
         status: apiStatus,
         message: apiMessage,
         dataset,
-      } = await getPresignedUrl(file, API);
+      } = await getPresignedUrl(file);
       setStatus(apiStatus);
 
       if (apiStatus) {
-        await uploadToS3(file, dataset.url, setProgress, setMessage);
+        await uploadToS3(file, dataset, setProgress, setMessage);
       } else {
         setMessage(`Error: ${apiMessage}`);
       }
-    } catch {
+    } catch (err) {
+      console.error("Upload error:", err);
       setStatus(false);
       setMessage("An error occurred during upload.");
     }
@@ -51,6 +52,12 @@ function App() {
     <div className="app-container">
       <h2 className="app-title">Upload File to S3</h2>
       <input type="file" onChange={handleFileChange} className="file-input" />
+      <div className="file-note">
+        Allowed types: Images (PNG, JPEG, JPG, GIF, WEBP), PDF, Videos (MP4,
+        WEBM, OGG, MOV, AVI, MKV)
+        <br />
+        Max file size: 100MB
+      </div>
       <br />
       <button onClick={handleUpload} className="upload-btn">
         Upload
