@@ -1,0 +1,73 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #eee;
+  background: #fafbfc;
+}
+
+.app-title {
+  text-align: center;
+  color: #333;
+}
+
+.file-input {
+  margin: 16px 0;
+  width: 100%;
+}
+
+.upload-btn {
+  padding: 8px 24px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.progress-text {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.message-success {
+  color: green;
+  font-weight: bold;
+}
+
+.message-error {
+  color: red;
+  font-weight: bold;
+}
