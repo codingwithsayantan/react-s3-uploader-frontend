@@ -42,8 +42,22 @@
 }
 
 .file-input {
-  margin: 16px 0;
+  margin: 16px 0 24px 0;
   width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f8f9fa;
+  font-size: 1em;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  display: block;
+}
+
+.file-input:focus {
+  border-color: #007bff;
+  outline: none;
+  background: #fff;
 }
 
 .upload-btn {
@@ -70,4 +84,12 @@
 .message-error {
   color: red;
   font-weight: bold;
+}
+
+.app-footer {
+  text-align: center;
+  color: #888;
+  font-size: 0.95em;
+  margin-top: 32px;
+  letter-spacing: 0.5px;
 }
